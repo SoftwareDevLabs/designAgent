@@ -1,2 +1,34 @@
 # designAgent
-software design agent that can help architects and developer built their architecture design and detailed design needed for the implementation
+software design agent that can help architects and developer built their architecture design and detailed design needed for the implementation.
+
+Software Design Agent – Requirements Specification
+
+Supported System Domains and Standards
+	•	Embedded & POSIX-based Systems: Target real-time embedded platforms (microcontrollers, SoCs) and POSIX-compatible systems (embedded Linux or RTOS) with virtualization (hypervisors) support. These include automotive ECUs, avionics systems, defense platforms, medical devices, etc. – all of which often require hard real-time operation and partitioning.
+	•	Safety-Critical Industries: Focus on automotive, aerospace, defense, and medical domains. The agent must incorporate domain constraints (e.g. mixed-criticality, redundancy) and ensure designs comply with relevant standards. For example, automotive systems must meet ISO 26262 (functional safety) and ASPICE guidelines; aerospace systems require DO-178C (avionics safety); medical devices follow IEC 62304 (medical software) and ISO 26262/ISO 21434‐like standards for functional safety and security ￼ ￼; defense applications follow MIL-STD processes, etc. The agent should encode these standards’ requirements into its guidance (e.g. checklists, constraints).
+	•	Virtualization & Partitioning: Support systems using virtualization or separation kernels (e.g. PikeOS, QNX Hypervisor) that enable mixed-criticality deployment. Such platforms are designed for safety/security applications in avionics and automotive (ISO 26262) and guarantee hard real-time determinism. The agent must model virtualized partitions and their interactions.
+
+Input Formats
+	•	Natural Language Requirements: Accept free-text specifications (user stories, use cases, plain-English requirements) as input. The agent’s NLP/LLM component will interpret these to extract functional and non-functional requirements.
+	•	Templates & Structured Docs: Support semi-formal input templates (e.g. requirement specification documents, SysML requirements tables, context diagrams) to capture known system structure or constraints. These guide the agent’s initial design scope.
+	•	Code Snippets / APIs: Allow input of existing code fragments or interface definitions (e.g. C/C++ headers, API descriptions). The agent can use these to infer component interfaces or reuse software modules. (This leverages POSIX or RTOS API code as hints for architecture.)
+	•	Diagrams & Models: (Optional) The agent may import existing UML/SysML diagrams or block definitions. Even if not primary, support for reading common exchange formats (XMI, etc.) can help refine designs.
+
+Output Formats and Tool Integration
+	•	UML/SysML Diagrams: Generate comprehensive design models. This includes UML diagrams (class, component, sequence, activity, state, deployment, etc.) ￼ and SysML diagrams (block definition, internal block, requirements, parametric, etc.) ￼. These diagrams capture system structure, behavior, and requirements traceability.
+	•	Textual Models: Provide machine-readable model exports. For example, output PlantUML text for integration with PlantUML’s tooling, or XMI/JSON representations for other UML/SysML tools. This supports seamless handoff to design tools and version control.
+	•	Toolchain Compatibility: Integrate with popular modeling/editing environments. The agent should export to or interface with tools like PlantUML, Draw.io, or MBSE tools (e.g. MagicDraw/Cameo, Papyrus). For example, PlantUML uses simple text to create UML diagrams ￼, and SysML outputs should align with the OMG SysML standard ￼.
+	•	Code Skeletons (Optional): Optionally produce code or configuration snippets (e.g. interface stubs, configuration files) in target languages (C/C++, XML for AUTOSAR) as part of detailed design.
+
+Deployment & Interfaces
+	•	Multi-Modal Deployment: Implement as both a standalone tool and as extensible plugins or services. For example, provide a command-line/desktop application, a cloud-based service, and plugins for IDEs/editors (e.g. VS Code extension). This ensures users can access it in the workflow they prefer.
+	•	Collaboration Support: Integrate with version control systems (e.g. Git/GitHub) and CI/CD pipelines. The agent could output or update architecture documents in a repository and run compliance checks automatically.
+	•	User Interface: Offer a GUI or web UI for interactive design, as well as APIs for automation. For instance, allow architects to visualize and edit proposed UML/SysML diagrams in a drag-and-drop editor (via Draw.io or similar) after generation.
+	•	Extensibility: Design the agent to support additional platforms/formats over time (e.g. support for new modeling notations or standards) by using a plugin architecture.
+
+AI and Validation Capabilities
+	•	LLM-driven Design Synthesis: Employ GPT-style language models to parse user inputs (requirements, templates) and generate architecture suggestions. The LLM can propose components, connections, and design patterns from natural language descriptions. For example, given a requirement “system shall communicate over CAN bus,” it might create a component model with a CAN interface.
+	•	Design Rule Enforcement: Combine the generative AI with rule-based engines to ensure correctness. For instance, apply static-analysis–style checks on the generated design: enforce coding/architecture standards (e.g. MISRA C/C++ rules in code, OWASP in security-critical modules), pattern consistency, and domain-specific rules (e.g. separation of safety-critical partitions). Automotive SPICE requires static verification and coding standards compliance ￼; similarly, the agent should flag violations early.
+	•	Standards Compliance Checks: Encode key rules from ISO 26262, ISO 21434, ASPICE, DO-178C, etc., as validation conditions. For example, automatically verify that safety requirements have traceable safety mechanisms, or that cybersecurity measures (e.g. encryption modules) are present per ISO 21434. This ensures the design output aligns with industry regulations ￼ ￼.
+	•	Iterative Refinement: Allow back-and-forth interaction. The agent should take feedback or additional constraints (e.g. “make component X redundant for fault tolerance”) and revise the design. It should maintain traceability (e.g. link requirements to design elements) throughout these iterations.
+	•	Explainability: Provide rationales or justification for design decisions, possibly by citing relevant best practices or standard clauses. For example, if the agent allocates functions to a component, it might note “follows AUTOSAR layering” or “to meet ISO 26262 ASIL D separation requirements.”
